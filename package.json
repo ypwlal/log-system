@@ -1,0 +1,19 @@
+{
+  "name": "log-system",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./bin/start.js",
+
+    "test": "node ./bin/test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.16.0",
+    "express": "^4.14.0",
+    "source-map": "^0.5.6"
+  }
+}

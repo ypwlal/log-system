@@ -1,0 +1,61 @@
+<html>
+    <title>test</title>
+    <body>
+        <script>
+            function errorLog(BOM) {
+                return BOM.onerror = (msg, fileUrl, line, column, errorObj) => {
+                    let navigator = {
+                        appCodeName: BOM.navigator.appCodeName || 'unknow',
+                        appName: BOM.navigator.appCodeName || 'unknow',
+                        appVersion: BOM.navigator.appVersion || 'unknow',
+                        userAgent: BOM.navigator.userAgent || 'unknow',
+                        platform: BOM.navigator.platform || 'unknow',
+                        language: BOM.navigator.language || 'unknow',
+                        onLine: BOM.navigator.onLine,
+                    };
+
+                    let data = {
+                        message: msg,
+                        url: fileUrl,
+                        line: line,
+                        column: column || (BOM.event && BOM.event.errorCharacter) || 0,
+                        navigator: JSON.stringify(navigator)
+                    };
+
+                        if (errorObj && errorObj.stack){
+                            data.stack = (errorObj.stack || errorObj.stacktrace).toString();
+                        }
+
+                        console.log('error log:');
+                        console.log(data);
+                        errLog('/api/log', data);
+                        return true;
+                }
+            }
+
+            function errLog(url, data) {
+                if (!url || !data) {
+                    return;
+                }
+
+                var image = document.createElement('img');
+                var res = [];
+                var params = Object.keys(data);
+                console.log(params)
+                params.map( item => {
+                    res.push(item + '=' + encodeURIComponent(data[item]));
+                });
+
+                image.onload  = image.onerror = function() {
+                    image = image.onload = image.onerror = null;
+                }
+
+                image.src = url + (url.indexOf('?') < 0 ? '?' : '&') + 't=' + (+new Date()) + '&' + res.join('&');
+            }
+
+            errorLog(window);
+
+            console.log(adddd);
+        </script>
+    </body>
+</html>
