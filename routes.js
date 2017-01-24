@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
+var db = require('./src/database/mysql/index.js').db;
+
 
 const defaultJson = {
     "status": 200,
@@ -22,9 +24,20 @@ router.get('/*', function(req, res, next) {
     } 
 })
 .get('/api/log', function(req, res) {
-    var querry = req.query;
-    console.log(querry);
-    return res.json(defaultJson)
+    var query = req.query;
+    console.log(query);
+    db.insert({user_id: 123, line:query.line, column: query.column, navigator: query.navigator, message: query.message, url:query.url}, 
+        function(err, rows, fields){  
+            if (err) {  
+                console.log(err);  
+                res.json(defaultJson)
+                return;  
+            }  
+            console.log(rows);  
+            console.log(fields); 
+            res.json(defaultJson) 
+        });
+    // return res.json(defaultJson)
 })
 
 module.exports = router;
